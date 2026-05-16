@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      jakarta.persistence.schema-generation.create-source: metadata
+      jakarta.persistence.schema-generation.database.action: none
+      jakarta.persistence.schema-generation.scripts.action: create
+      jakarta.persistence.schema-generation.scripts.create-target: build/generated-schema.sql
+      hibernate.format_sql: true
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
