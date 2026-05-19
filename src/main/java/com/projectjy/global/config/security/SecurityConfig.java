@@ -1,7 +1,7 @@
 package com.projectjy.global.config.security;
 
-import com.projectjy.global.jwt.CustomAccessDeniedHandler;
-import com.projectjy.global.jwt.CustomAuthEntryPoint;
+import com.projectjy.global.exception.CustomAccessDeniedHandler;
+import com.projectjy.global.exception.CustomAuthEntryPoint;
 import com.projectjy.global.jwt.JWTAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

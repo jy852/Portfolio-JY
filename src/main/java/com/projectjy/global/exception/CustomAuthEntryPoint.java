@@ -1,6 +1,5 @@
-package com.projectjy.global.jwt;
+package com.projectjy.global.exception;
 
-import com.projectjy.global.exception.AuthErrorCode;
 import com.projectjy.global.response.ApiResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,22 +8,22 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 import tools.jackson.databind.ObjectMapper;
 
 @Component
 @RequiredArgsConstructor
-public class CustomAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
 
   private final ObjectMapper objectMapper;
 
   @Override
-  public void handle(HttpServletRequest request, HttpServletResponse response,
-      AccessDeniedException accessDeniedException) throws IOException, ServletException {
+  public void commence(HttpServletRequest request, HttpServletResponse response,
+      AuthenticationException authException) throws IOException, ServletException {
 
-    AuthErrorCode errorCode = AuthErrorCode.ACCESS_DENIED;
+    AuthErrorCode errorCode = resolveErrorCode(authException);
 
     response.setStatus(errorCode.getStatus().value());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -36,6 +35,12 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
     );
 
     objectMapper.writeValue(response.getWriter(), body);
+  }
 
+  private AuthErrorCode resolveErrorCode(AuthenticationException e){
+    if(e instanceof JwtTokenException tokenException){
+      return tokenException.getError();
+    }
+    return AuthErrorCode.AUTHENTICATION_REQUIRED;
   }
 }

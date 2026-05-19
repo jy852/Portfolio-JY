@@ -1,7 +1,7 @@
 package com.projectjy.global.jwt;
 
+import com.projectjy.global.exception.CustomAuthEntryPoint;
 import com.projectjy.global.exception.JwtTokenException;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
