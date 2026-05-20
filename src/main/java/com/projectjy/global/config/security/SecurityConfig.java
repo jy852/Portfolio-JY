@@ -51,6 +51,7 @@ public class SecurityConfig {
             .authenticationEntryPoint(customAuthEntryPoint)
             .accessDeniedHandler(customAccessDeniedHandler)
         )
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/login").permitAll())
         .authorizeHttpRequests(auth -> auth
             .anyRequest().authenticated()
         )
